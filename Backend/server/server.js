@@ -13,22 +13,35 @@ wss.on("connection", (ws) => {
   if(queue.length >= 2) {
     const player1 = queue.shift();
     const player2 = queue.shift();
+    const gameId = Date.now();
 
-    console.log("player1:", player1._socket.remoteAddress, player1._socket.remotePort);
-    console.log("player2:", player2._socket.remoteAddress, player2._socket.remotePort);
+    games.set(gameId, {
+      board: Array(9).fill(""),
+      currentPlayer: "X",
+      players: [player1, player2]
+    })
 
-    player1.send("You are player 1, The game begins");
-    player2.send("You are player 2, The game begins");
+    player1.gameId = gameId;
+    player2.gameId = gameId;
 
-   player1.on("close", () => {
-  console.log("Player 1 disconnected");
-    player2.send("Player 1 disconnected, the game ends")
-});
+    player1.symbol = "X";
+    player2.symbol = "O";
 
-player2.on("close", () => {
-  console.log("Player 2 disconnected");
-    player1.send("Player 2 disconnected, the game ends");
-});
+    console.log(`Game ${gameId} started: ${player1.symbol} vs ${player2.symbol}`);
+
+    player1.send(JSON.stringify({ type: "start", symbol: "X"}));
+    player2.send(JSON.stringify({ type: "start", symbol: "O"}));
+
+    ws.on("error", (error) => {
+      console.log("Websocket Error", error)
+    })
+
+
+    ws.on("close", () => {
+      console.log("A player disconnected");
+      player1.send(JSON.stringify({ type: "end"}));
+      player2.send(JSON.stringify({ type: "end" }));
+    })
 
   }
 });
