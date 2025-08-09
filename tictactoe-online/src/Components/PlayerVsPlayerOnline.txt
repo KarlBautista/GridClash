@@ -1,0 +1,170 @@
+import React, { useState, useEffect } from 'react';
+
+export default function PlayerVsPlayerOnline() {
+  // WebSocket connection instance
+  const [ws, setWs] = useState(null);
+  // Player symbol assigned by server: "X" or "O"
+  const [symbol, setSymbol] = useState(null);
+  // Tic Tac Toe board state, array of 9 cells
+  const [board, setBoard] = useState(Array(9).fill(""));
+  // Status message shown to player
+  const [status, setStatus] = useState("Connecting to server...");
+  // Tracks which player's turn it is ("X" or "O")
+  const [currentPlayer, setCurrentPlayer] = useState("X");
+  // Flag to check if the game has started
+  const [gameStarted, setGameStarted] = useState(false);
+  // Stores winner symbol or "Draw" or null if no winner yet
+  const [winner, setWinner] = useState(null);
+
+  // Function to check if there's a winner or a draw
+  const checkWinner = (board) => {
+    const winPatterns = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+      [0, 4, 8], [2, 4, 6]             // diagonals
+    ];
+
+    // Check each winning pattern
+    for (let pattern of winPatterns) {
+      const [a, b, c] = pattern;
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return board[a];  // Return the winner symbol "X" or "O"
+      }
+    }
+
+    // Check for draw (no empty cells left)
+    if (board.every(cell => cell !== "")) {
+      return "Draw";
+    }
+
+    // No winner or draw yet
+    return null;
+  };
+
+  // useEffect runs once on component mount, sets up WebSocket connection
+  useEffect(() => {
+    // Create WebSocket connection to server
+    const socket = new WebSocket("ws://localhost:9090");
+    setWs(socket);
+
+    // Connection opened
+    socket.onopen = () => {
+      setStatus("Waiting for opponent...");
+    };
+
+    // Handle messages from server
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("Received from server:", data);
+
+      if (data.type === "start") {
+        // Game started, server assigns symbol to player
+        setSymbol(data.symbol);
+        setGameStarted(true);
+        setStatus(`Game started! You are ${data.symbol}. ${data.symbol === 'X' ? 'Your turn!' : 'Waiting for opponent...'}`);
+        setCurrentPlayer("X");  // X always starts
+      } else if (data.type === "update") {
+        // Board update after a move
+        setBoard(data.board);
+
+        const winner = checkWinner(data.board);
+        if (winner) {
+          // If winner or draw, update status and store winner
+          if (winner === "Draw") {
+            setStatus("It's a draw!");
+          } else {
+            setStatus(`${winner} wins!`);
+          }
+          setWinner(winner);
+        } else {
+          // No winner yet, update current player and status
+          const nextPlayer = data.currentPlayer || (currentPlayer === "X" ? "O" : "X");
+          setCurrentPlayer(nextPlayer);
+
+          if (nextPlayer === symbol) {
+            setStatus(`Your turn! (${symbol})`);
+          } else {
+            setStatus(`Opponent's turn... (${nextPlayer})`);
+          }
+        }
+      } else if (data.type === "opponent_disconnected") {
+        // Opponent disconnected, end the game
+        setStatus("Opponent disconnected. Game ended.");
+        setWinner("disconnected");
+      }
+    };
+
+    // Handle connection errors
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+      setStatus("Connection error. Please refresh the page.");
+    };
+
+    // Handle connection close
+    socket.onclose = () => {
+      setStatus("Connection lost. Please refresh the page.");
+    };
+
+    // Cleanup on component unmount
+    return () => {
+      socket.close();
+    };
+  }, []); // Empty dependency array means this runs only once
+
+  // Handle player clicking a cell to make a move
+  const handleClick = (index) => {
+    // Only allow move if game started, cell empty, no winner yet, and it's player's turn
+    if (!gameStarted || board[index] !== "" || winner || currentPlayer !== symbol) return;
+
+    // Send move to server if WebSocket is open
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ type: "move", index }));
+    }
+  };
+
+  return (
+    <div>
+      <h1>TicTacToe Online</h1>
+      {/* Status message area */}
+      <div>{status}</div>
+
+      {/* Show player's symbol */}
+      {symbol && <div>You are: {symbol}</div>}
+
+      {/* Tic Tac Toe board */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 100px)",
+        gap: "5px",
+        marginTop: "20px"
+      }}>
+        {board.map((cell, i) => (
+          <div
+            key={i}
+            onClick={() => handleClick(i)}
+            style={{
+              border: "1px solid black",
+              height: "100px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "2.5rem",
+              cursor: (gameStarted && !board[i] && !winner && currentPlayer === symbol) ? "pointer" : "default",
+              backgroundColor: cell ? "#ddd" : "#fff",
+              userSelect: "none"
+            }}
+          >
+            {cell}
+          </div>
+        ))}
+      </div>
+
+      {/* Play again button appears if there is a winner */}
+      {winner && (
+        <button onClick={() => window.location.reload()} style={{ marginTop: "20px" }}>
+          Play Again
+        </button>
+      )}
+    </div>
+  );
+}

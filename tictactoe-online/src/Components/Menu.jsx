@@ -17,7 +17,7 @@ const Menu = () => {
         <div className="button-container">
             <button onClick={() => handleNavigate("player-vs-computer")}>Player VS Computer</button>
             <button onClick={() => handleNavigate("player-vs-player-local")}>Player VS Player (Local)</button>
-            <button>Player VS Player (Online)</button>
+            <button onClick={() => handleNavigate("player-vs-player-online")}>Player VS Player (Online)</button>
         </div>
       
     </div>
