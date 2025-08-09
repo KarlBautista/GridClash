@@ -1,0 +1,105 @@
+// server.js
+import { WebSocketServer } from 'ws';
+
+const wss = new WebSocketServer({ port: 8080 });
+const queue = []; // waiting players
+const games = new Map(); // store active games
+
+console.log('WebSocket server running on port 8080');
+
+wss.on('connection', ws => {
+  console.log('Player connected');
+
+  // Add player to queue
+  queue.push(ws);
+  console.log(`Players in queue: ${queue.length}`);
+
+  // If we have 2 players, start a gdame
+  if (queue.length >= 2) {
+    const player1 = queue.shift();
+    const player2 = queue.shift();
+    const gameId = Date.now();
+
+    games.set(gameId, { 
+      board: Array(9).fill(""), 
+      currentPlayer: "X",
+      players: [player1, player2]
+    });
+
+    player1.gameId = gameId;
+    player2.gameId = gameId;
+    player1.symbol = "X";
+    player2.symbol = "O";
+
+    console.log(`Game ${gameId} started: ${player1.symbol} vs ${player2.symbol}`);
+
+    player1.send(JSON.stringify({ type: 'start', symbol: "X" }));
+    player2.send(JSON.stringify({ type: 'start', symbol: "O" }));
+  }
+
+  ws.on('message', message => {
+    try {
+      const data = JSON.parse(message);
+      const game = games.get(ws.gameId);
+
+      if (data.type === 'move' && game && game.board[data.index] === "") {
+        // Check if it's the player's turn
+        if (ws.symbol !== game.currentPlayer) {
+          console.log(`Player ${ws.symbol} tried to move on ${game.currentPlayer}'s turn`);
+          return;
+        }
+
+        game.board[data.index] = ws.symbol;
+        game.currentPlayer = game.currentPlayer === "X" ? "O" : "X";
+
+        console.log(`Move made by ${ws.symbol} at position ${data.index}`);
+        console.log('Board state:', game.board);
+
+        // Broadcast to both players
+        wss.clients.forEach(client => {
+          if (client.gameId === ws.gameId && client.readyState === 1) {
+            client.send(JSON.stringify({ 
+              type: 'update', 
+              board: game.board,
+              currentPlayer: game.currentPlayer
+            }));
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error processing message:', error);
+    }
+  });
+
+  ws.on('close', () => {
+    console.log('Player disconnected');
+    // Remove from queue if still waiting
+    const queueIndex = queue.indexOf(ws);
+    if (queueIndex !== -1) {
+      queue.splice(queueIndex, 1);
+      console.log(`Player removed from queue. Players in queue: ${queue.length}`);
+    }
+
+    // Handle game cleanup if player was in a game
+    if (ws.gameId) {
+      const game = games.get(ws.gameId);
+      if (game) {
+        // Notify the other player that opponent disconnected
+        wss.clients.forEach(client => {
+          if (client.gameId === ws.gameId && client !== ws && client.readyState === 1) {
+            client.send(JSON.stringify({ 
+              type: 'opponent_disconnected',
+              message: 'Your opponent has disconnected'
+            }));
+          }
+        });
+        games.delete(ws.gameId);
+        console.log(`Game ${ws.gameId} ended due to disconnection`);
+      }
+    }
+  });
+
+  ws.on('error', (error) => {
+    console.error('WebSocket error:', error);
+  });
+});
