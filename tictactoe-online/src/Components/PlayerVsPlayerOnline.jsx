@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 const PlayerVsPlayerOnline = () => {
     const [ ws, setWs ] = useState(null);
@@ -7,7 +7,7 @@ const PlayerVsPlayerOnline = () => {
     const [ currentPlayer, setCurrentPlayer ] = useState("X");
     const [ gameStarted, setGameStarted ] = useState(false);
     const [ symbol, setSymbol ] = useState(null);
-    let isConnected = false;
+    const isConnected = useRef(false);
 
        const winPatters = [
         [0, 1, 2],
@@ -21,8 +21,8 @@ const PlayerVsPlayerOnline = () => {
     ];
 
     useEffect(() => {
-        if(isConnected) return;
-        isConnected = true;
+        if(isConnected.current) return;
+        isConnected.current = true;
         const socket = new WebSocket("ws://localhost:9090");
       
         
@@ -50,6 +50,7 @@ const PlayerVsPlayerOnline = () => {
             if(checkIfDraw(data.board)){
               setStatus("Its a draw");
               setGameStarted(false);
+            
               return
             }
 
@@ -62,31 +63,46 @@ const PlayerVsPlayerOnline = () => {
            }
 
            if(data.type === "reset"){
+            console.log("Reset message received:", data);
             setGameState(data.board);
             setCurrentPlayer(data.currentPlayer);
             setGameStarted(true);
             setStatus(`Game reset! ${data.currentPlayer} starts first.`);
+            console.log("Game state after reset:", {
+              gameStarted: true,
+              currentPlayer: data.currentPlayer,
+              symbol: symbol,
+              board: data.board
+            });
            }
 
-           if(data.type === "reset_confirmation"){
-            console.log("Reset confirmation received from:", data.requestedBy);
-            
-            // Use setTimeout to ensure the UI is ready for the dialog
-            setTimeout(() => {
-              const confirmed = window.confirm(`Player ${data.requestedBy} wants to reset the game. Do you agree?`);
-              console.log("User response:", confirmed);
-              
-              if(ws && ws.readyState === WebSocket.OPEN) {
-                ws.send(JSON.stringify({
-                  type: "reset_response",
-                  approved: confirmed
-                }));
-                console.log("Response sent to server");
-              } else {
-                console.error("WebSocket not ready when sending response");
-              }
-            }, 100);
-           }
+              if (data.type === "reset_confirmation") {
+      console.log("Reset confirmation received from:", data.requestedBy);
+
+      const sendResponse = (approved) => {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: "reset_response", approved }));
+        } else {
+          console.warn("WebSocket not available when trying to send reset_response");
+        }
+      };
+
+      const confirmReset = () => {
+        const confirmed = window.confirm("Opponent wants to reset...");
+        sendResponse(confirmed);
+      };
+
+      if (document.visibilityState !== "visible") {
+        const onVisible = () => {
+          confirmReset();
+          document.removeEventListener("visibilitychange", onVisible);
+        };
+        document.addEventListener("visibilitychange", onVisible);
+      } else {
+        confirmReset();
+      }
+}
+
 
            if(data.type === "reset_pending"){
             console.log("Reset pending message received:", data.message);
@@ -122,9 +138,6 @@ const PlayerVsPlayerOnline = () => {
           socket.close();
         }
        }
-
-
-      
        
     }, [symbol]);
 
@@ -153,9 +166,26 @@ const PlayerVsPlayerOnline = () => {
        
 
     const handleClick = (index) => {
-      if(!gameStarted || gameState[index] !== "" || currentPlayer !== symbol) return;
+      console.log("Click attempted:", {
+        index,
+        gameStarted,
+        cellEmpty: gameState[index] === "",
+        currentPlayer,
+        symbol,
+        isMyTurn: currentPlayer === symbol
+      });
+      
+      if(!gameStarted || gameState[index] !== "" || currentPlayer !== symbol) {
+        console.log("Move blocked - reasons:", {
+          gameNotStarted: !gameStarted,
+          cellNotEmpty: gameState[index] !== "",
+          notMyTurn: currentPlayer !== symbol
+        });
+        return;
+      }
 
       if(ws && ws.readyState === WebSocket.OPEN) {
+        console.log("Sending move to server");
         ws.send(JSON.stringify({ type: "move", index}));
        
       }
@@ -167,6 +197,7 @@ const PlayerVsPlayerOnline = () => {
         ws.send(JSON.stringify({ type: "reset_request" }));
         setStatus("Requesting game reset...");
         console.log("Reset request sent to server");
+         
       } else {
         console.error("WebSocket not ready for reset request");
       }
