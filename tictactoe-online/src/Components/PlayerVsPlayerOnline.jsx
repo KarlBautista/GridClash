@@ -8,6 +8,7 @@ const PlayerVsPlayerOnline = () => {
     const [ gameStarted, setGameStarted ] = useState(false);
     const [ symbol, setSymbol ] = useState(null);
     const isConnected = useRef(false);
+    const wsRef = useRef(null);
 
        const winPatters = [
         [0, 1, 2],
@@ -24,8 +25,7 @@ const PlayerVsPlayerOnline = () => {
         if(isConnected.current) return;
         isConnected.current = true;
         const socket = new WebSocket("ws://localhost:9090");
-      
-        
+        wsRef.current = socket;
         setWs(socket);
 
         socket.onopen = () => {
@@ -62,26 +62,21 @@ const PlayerVsPlayerOnline = () => {
             }
            }
 
-           if(data.type === "reset"){
-            console.log("Reset message received:", data);
-            setGameState(data.board);
-            setCurrentPlayer(data.currentPlayer);
-            setGameStarted(true);
-            setStatus(`Game reset! ${data.currentPlayer} starts first.`);
-            console.log("Game state after reset:", {
-              gameStarted: true,
-              currentPlayer: data.currentPlayer,
-              symbol: symbol,
-              board: data.board
-            });
-           }
+        if (data.type === "reset") {
+        console.log("Reset message received:", data);
+        setGameState([...data.board]); // clone to ensure React notices
+        setCurrentPlayer(data.currentPlayer);
+        setGameStarted(true);
+        setStatus(`Game reset! ${data.currentPlayer} starts first.`);
+}
 
-              if (data.type === "reset_confirmation") {
+
+        if (data.type === "reset_confirmation") {
       console.log("Reset confirmation received from:", data.requestedBy);
 
       const sendResponse = (approved) => {
-        if (ws && ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify({ type: "reset_response", approved }));
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+          wsRef.current.send(JSON.stringify({ type: "reset_response", approved }));
         } else {
           console.warn("WebSocket not available when trying to send reset_response");
         }
