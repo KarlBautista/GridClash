@@ -1,10 +1,22 @@
 import { WebSocketServer } from "ws";
+import express from  "express";
+import { createServer } from "http";
+const app = express();
 
-const wss = new WebSocketServer({ port: 9090 });
+app.get("/", (req, res) => {
+  res.send("Grid clash Websocket server is runnung");
+});
+
+const PORT = process.env.PORT || 3000;
+
+const server = createServer(app);
+
+
+const wss = new WebSocketServer({ server });
 const queue = [];
 const games = new Map();
 
-console.log("WebSocket server is running on port 9090");
+console.log("Websocket server is set up ready");
 
 
 const handleMove = (ws, data, game) => {
@@ -170,3 +182,7 @@ wss.on("connection", (ws) => {
     createGame(player1, player2);
   }
 });
+
+server.listen(PORT, () => {
+  console.log("Server is running on port ", PORT);
+})

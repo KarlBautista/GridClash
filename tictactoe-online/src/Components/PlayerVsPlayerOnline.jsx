@@ -25,7 +25,7 @@ const PlayerVsPlayerOnline = () => {
     useEffect(() => {
         if(isConnected.current) return;
         isConnected.current = true;
-        const socket = new WebSocket("ws://localhost:9090");
+        const socket = new WebSocket("wss://gridclash.onrender.com");
         wsRef.current = socket;
         setWs(socket);
 
