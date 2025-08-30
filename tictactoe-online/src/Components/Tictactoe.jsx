@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import "../styles/Tictactoe.css"
 import NameInput from './NameInput';
-import { usePVPLocalContext } from '../contexts/pvpLocalContext';
+import { usePlayerVsPlayerLocalContext } from '../contexts/PlayerVsPlayerLocalContext';
 const Tictactoe = () => {
     const [ gameState, setGameState ] = useState(Array(9).fill(""));
     const [ currentPlayer, setCurrentPlayer ] = useState("X");
     const [ gameStatus, setGameStatus ] = useState("Player X turn");
     const [ isGameActive, setIsGameActive] = useState(true);
-    const { playerNames } = usePVPLocalContext();
+    const { playerNames } = usePlayerVsPlayerLocalContext();
     const [score, setScore] = useState({
         playerX: 0,
         playerO: 0,

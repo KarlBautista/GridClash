@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from "react";
 
- const PVPLocalContext = createContext();
+ const PlayerVsPlayerLocalContext = createContext();
 
-export const usePVPLocalContext = () => useContext(PVPLocalContext);
+export const usePlayerVsPlayerLocalContext = () => useContext(PlayerVsPlayerLocalContext);
 
-export const PVPLocalProvider = ({ children }) => {
+export const PlayerVsPlayerLocalProvider = ({ children }) => {
     const [ playerNames, setPlayerNames] = useState({
         playerX: "",
         playerO: "",
@@ -31,9 +31,9 @@ export const PVPLocalProvider = ({ children }) => {
     }
 
     return(
-        <PVPLocalContext.Provider value={value}>
+        <PlayerVsPlayerLocalContext.Provider value={value}>
             {children}
-        </PVPLocalContext.Provider>
+        </PlayerVsPlayerLocalContext.Provider>
     )
 
 
