@@ -1,37 +1,44 @@
 /* Import gaming font */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-/* Main container */
-.tictactoe-computer {
+/* Global container styling */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
+  min-height: 100vh;
+  color: #ffffff;
+  overflow-x: hidden;
+  /* Mobile enhancements */
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Prevent zoom on input focus (iOS) */
+input, button {
+  font-size: 16px;
+}
+
+@media (max-width: 480px) {
+  input, button {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Main game container */
+.game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  width: 100vw;
   padding: 20px;
-  box-sizing: border-box;
-  font-family: 'Orbitron', monospace;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
-  color: #ffffff;
-  text-align: center;
-  background-attachment: fixed;
-  position: relative;
-  overflow: hidden;
-}
-
-.tictactoe-computer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
               radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
               radial-gradient(circle at 40% 80%, rgba(120, 255, 198, 0.3), transparent 50%);
   animation: backgroundPulse 10s ease-in-out infinite alternate;
-  pointer-events: none;
 }
 
 @keyframes backgroundPulse {
@@ -40,8 +47,8 @@
 }
 
 /* Title styling */
-.tictactoe-computer h1 {
-  font-size: 3.5rem;
+h1 {
+  font-size: 3rem;
   font-weight: 900;
   text-align: center;
   margin-bottom: 2rem;
@@ -52,8 +59,6 @@
   -webkit-text-fill-color: transparent;
   animation: gradientShift 3s ease-in-out infinite;
   text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
-  position: relative;
-  z-index: 1;
 }
 
 @keyframes gradientShift {
@@ -62,7 +67,7 @@
 }
 
 /* Game info section */
-.tictactoe-computer .game-info {
+.game-info {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,11 +79,9 @@
   border-radius: 15px;
   border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  position: relative;
-  z-index: 1;
 }
 
-.tictactoe-computer .status {
+.status {
   font-size: 1.2rem;
   font-weight: 700;
   text-align: center;
@@ -95,14 +98,14 @@
   100% { box-shadow: 0 4px 25px rgba(102, 126, 234, 0.8); }
 }
 
-.tictactoe-computer .player-info {
+.player-info {
   font-size: 1.1rem;
   font-weight: 700;
   color: #4ecdc4;
   text-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
 }
 
-.tictactoe-computer .score-display {
+.score-display {
   font-size: 1.3rem;
   font-weight: 700;
   padding: 0.8rem 1.5rem;
@@ -119,13 +122,13 @@
 }
 
 /* TicTacToe grid container */
-.tictactoe-computer .tictactoe-container {
+.tictactoe-container2 {
   display: grid;
-  grid-template-columns: repeat(3, 150px);
-  grid-template-rows: repeat(3, 150px);
-  gap: 10px;
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(3, 120px);
+  gap: 8px;
   margin: 2rem 0;
-  padding: 25px;
+  padding: 20px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 20px;
   border: 3px solid rgba(255, 255, 255, 0.3);
@@ -133,8 +136,6 @@
     0 15px 35px rgba(0, 0, 0, 0.5),
     inset 0 2px 4px rgba(255, 255, 255, 0.1);
   animation: gridGlow 4s ease-in-out infinite alternate;
-  position: relative;
-  z-index: 1;
 }
 
 @keyframes gridGlow {
@@ -153,11 +154,11 @@
 }
 
 /* Individual cell styling */
-.tictactoe-computer .cell {
+.cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 900;
   color: #ffffff;
   background: linear-gradient(145deg, #2c3e50, #34495e);
@@ -169,7 +170,7 @@
   overflow: hidden;
 }
 
-.tictactoe-computer .cell::before {
+.cell::before {
   content: '';
   position: absolute;
   top: 0;
@@ -180,7 +181,7 @@
   transition: left 0.5s;
 }
 
-.tictactoe-computer .cell:hover {
+.cell:hover {
   transform: translateY(-5px) scale(1.05);
   background: linear-gradient(145deg, #3498db, #2980b9);
   border-color: #4ecdc4;
@@ -189,17 +190,17 @@
     0 0 20px rgba(78, 205, 196, 0.3);
 }
 
-.tictactoe-computer .cell:hover::before {
+.cell:hover::before {
   left: 100%;
 }
 
-.tictactoe-computer .cell:active {
+.cell:active {
   transform: translateY(-2px) scale(1.02);
   transition: all 0.1s ease;
 }
 
 /* X and O styling */
-.tictactoe-computer .cell:not(:empty) {
+.cell:not(:empty) {
   animation: cellFillIn 0.5s ease-out;
   pointer-events: none;
 }
@@ -220,16 +221,14 @@
 }
 
 /* Button container */
-.tictactoe-computer .button-container {
+.button-container {
   display: flex;
   gap: 1.5rem;
   margin-top: 2rem;
-  position: relative;
-  z-index: 1;
 }
 
 /* Button styling */
-.tictactoe-computer button {
+button {
   padding: 1rem 2rem;
   font-size: 1.1rem;
   font-weight: 700;
@@ -244,7 +243,7 @@
   letter-spacing: 1px;
 }
 
-.tictactoe-computer button::before {
+button::before {
   content: '';
   position: absolute;
   top: 0;
@@ -255,31 +254,31 @@
   transition: left 0.5s;
 }
 
-.tictactoe-computer button:hover::before {
+button:hover::before {
   left: 100%;
 }
 
 /* Reset button */
-.tictactoe-computer button:first-of-type {
+button:first-of-type {
   background: linear-gradient(45deg, #ff6b6b, #ee5a52);
   color: white;
   box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
 }
 
-.tictactoe-computer button:first-of-type:hover {
+button:first-of-type:hover {
   background: linear-gradient(45deg, #ff5252, #d32f2f);
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
 }
 
-/* Other buttons */
-.tictactoe-computer button:not(:first-of-type) {
+/* Exit button */
+button:last-of-type {
   background: linear-gradient(45deg, #9b59b6, #8e44ad);
   color: white;
   box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4);
 }
 
-.tictactoe-computer button:not(:first-of-type):hover {
+button:last-of-type:hover {
   background: linear-gradient(45deg, #8e44ad, #732d91);
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(155, 89, 182, 0.6);
@@ -287,235 +286,185 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .tictactoe-computer h1 {
-    font-size: 2.8rem;
+  h1 {
+    font-size: 2.2rem;
     margin-bottom: 1.5rem;
   }
   
-  .tictactoe-computer .game-info {
+  .game-info {
     padding: 1.2rem;
     gap: 0.8rem;
     margin-bottom: 1.5rem;
   }
   
-  .tictactoe-computer .tictactoe-container {
-    grid-template-columns: repeat(3, 130px);
-    grid-template-rows: repeat(3, 130px);
+  .tictactoe-container2 {
+    grid-template-columns: repeat(3, 110px);
+    grid-template-rows: repeat(3, 110px);
     gap: 8px;
-    padding: 20px;
+    padding: 18px;
     margin: 1.5rem 0;
   }
   
-  .tictactoe-computer .cell {
-    font-size: 3.5rem;
+  .cell {
+    font-size: 2.8rem;
   }
   
-  .tictactoe-computer .button-container {
+  .button-container {
     flex-direction: column;
     gap: 1rem;
     align-items: center;
   }
   
-  .tictactoe-computer button {
+  button {
     padding: 0.9rem 2rem;
     font-size: 1rem;
     min-width: 180px;
   }
   
-  .tictactoe-computer .status {
+  .status {
     font-size: 1.1rem;
     padding: 0.4rem 0.8rem;
   }
   
-  .tictactoe-computer .score-display {
+  .score-display {
     font-size: 1.2rem;
     padding: 0.7rem 1.2rem;
   }
 }
 
 @media (max-width: 600px) {
-  .tictactoe-computer {
+  .game-container {
     padding: 15px;
   }
   
-  .tictactoe-computer h1 {
-    font-size: 2.4rem;
+  h1 {
+    font-size: 1.9rem;
     margin-bottom: 1.2rem;
   }
   
-  .tictactoe-computer .game-info {
+  .game-info {
     padding: 1rem;
     gap: 0.7rem;
     margin-bottom: 1.2rem;
   }
   
-  .tictactoe-computer .tictactoe-container {
-    grid-template-columns: repeat(3, 110px);
-    grid-template-rows: repeat(3, 110px);
+  .tictactoe-container2 {
+    grid-template-columns: repeat(3, 95px);
+    grid-template-rows: repeat(3, 95px);
     gap: 6px;
-    padding: 18px;
+    padding: 15px;
     margin: 1.2rem 0;
   }
   
-  .tictactoe-computer .cell {
-    font-size: 3rem;
+  .cell {
+    font-size: 2.4rem;
   }
   
-  .tictactoe-computer button {
+  button {
     padding: 0.8rem 1.8rem;
     font-size: 0.9rem;
     min-width: 160px;
   }
   
-  .tictactoe-computer .status {
+  .status {
     font-size: 1rem;
     padding: 0.4rem 0.7rem;
   }
   
-  .tictactoe-computer .score-display {
+  .score-display {
     font-size: 1.1rem;
     padding: 0.6rem 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .tictactoe-computer {
+  .game-container {
     padding: 10px;
   }
   
-  .tictactoe-computer h1 {
-    font-size: 2rem;
+  h1 {
+    font-size: 1.6rem;
     margin-bottom: 1rem;
   }
   
-  .tictactoe-computer .game-info {
+  .game-info {
     padding: 0.8rem;
     gap: 0.6rem;
     margin-bottom: 1rem;
   }
   
-  .tictactoe-computer .tictactoe-container {
-    grid-template-columns: repeat(3, 90px);
-    grid-template-rows: repeat(3, 90px);
+  .tictactoe-container2 {
+    grid-template-columns: repeat(3, 80px);
+    grid-template-rows: repeat(3, 80px);
     gap: 5px;
-    padding: 15px;
+    padding: 12px;
     margin: 1rem 0;
   }
   
-  .tictactoe-computer .cell {
-    font-size: 2.5rem;
+  .cell {
+    font-size: 2rem;
   }
   
-  .tictactoe-computer .button-container {
+  .button-container {
     gap: 0.8rem;
   }
   
-  .tictactoe-computer button {
+  button {
     padding: 0.7rem 1.5rem;
     font-size: 0.8rem;
     min-width: 140px;
   }
   
-  .tictactoe-computer .status {
+  .status {
     font-size: 0.9rem;
     padding: 0.3rem 0.6rem;
   }
   
-  .tictactoe-computer .score-display {
+  .score-display {
     font-size: 1rem;
     padding: 0.5rem 0.8rem;
   }
   
-  .tictactoe-computer .player-info {
+  .player-info {
     font-size: 1rem;
   }
 }
 
 @media (max-width: 360px) {
-  .tictactoe-computer h1 {
-    font-size: 1.7rem;
+  h1 {
+    font-size: 1.4rem;
     margin-bottom: 0.8rem;
   }
   
-  .tictactoe-computer .game-info {
+  .game-info {
     padding: 0.6rem;
     gap: 0.5rem;
-    margin-bottom: 0.8rem;
   }
   
-  .tictactoe-computer .tictactoe-container {
-    grid-template-columns: repeat(3, 75px);
-    grid-template-rows: repeat(3, 75px);
+  .tictactoe-container2 {
+    grid-template-columns: repeat(3, 70px);
+    grid-template-rows: repeat(3, 70px);
     gap: 4px;
-    padding: 12px;
-    margin: 0.8rem 0;
+    padding: 10px;
   }
   
-  .tictactoe-computer .cell {
-    font-size: 2.2rem;
+  .cell {
+    font-size: 1.8rem;
   }
   
-  .tictactoe-computer button {
+  button {
     padding: 0.6rem 1.2rem;
     font-size: 0.75rem;
     min-width: 120px;
   }
   
-  .tictactoe-computer .status {
+  .status {
     font-size: 0.8rem;
     padding: 0.3rem 0.5rem;
   }
   
-  .tictactoe-computer .score-display {
+  .score-display {
     font-size: 0.9rem;
     padding: 0.4rem 0.6rem;
-  }
-}
-
-/* Landscape phone orientation */
-@media (max-height: 600px) and (orientation: landscape) {
-  .tictactoe-computer {
-    padding: 5px;
-  }
-  
-  .tictactoe-computer h1 {
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .tictactoe-computer .game-info {
-    padding: 0.5rem;
-    gap: 0.4rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .tictactoe-computer .tictactoe-container {
-    grid-template-columns: repeat(3, 80px);
-    grid-template-rows: repeat(3, 80px);
-    gap: 4px;
-    padding: 10px;
-    margin: 0.5rem 0;
-  }
-  
-  .tictactoe-computer .cell {
-    font-size: 2rem;
-  }
-  
-  .tictactoe-computer .button-container {
-    flex-direction: row;
-    gap: 0.5rem;
-  }
-  
-  .tictactoe-computer button {
-    padding: 0.5rem 1rem;
-    font-size: 0.7rem;
-    min-width: 100px;
-  }
-  
-  .tictactoe-computer .status,
-  .tictactoe-computer .score-display,
-  .tictactoe-computer .player-info {
-    font-size: 0.8rem;
-    padding: 0.3rem 0.5rem;
   }
 }

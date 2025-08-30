@@ -6,7 +6,7 @@ const games = new Map();
 
 console.log("WebSocket server is running on port 9090");
 
-// Message handlers
+
 const handleMove = (ws, data, game) => {
   if (!game || game.board[data.index] !== "") return;
   
@@ -105,17 +105,20 @@ const createGame = (player1, player2) => {
     board: Array(9).fill(""),
     currentPlayer: "X",
     players: [player1, player2],
+  
   });
 
   player1.gameId = gameId;
   player2.gameId = gameId;
   player1.symbol = "X";
   player2.symbol = "O";
+  player1.score = 0;
+  player2.score = 0;
 
   console.log(`Game ${gameId} started: ${player1.symbol} vs ${player2.symbol}`);
 
-  player1.send(JSON.stringify({ type: "start", symbol: "X" }));
-  player2.send(JSON.stringify({ type: "start", symbol: "O" }));
+  player1.send(JSON.stringify({ type: "start", symbol: "X", score: 0 }));
+  player2.send(JSON.stringify({ type: "start", symbol: "O" , score: 0 }));
 
   // Handle player disconnections
   const handleDisconnection = (disconnectedPlayer, otherPlayer) => {

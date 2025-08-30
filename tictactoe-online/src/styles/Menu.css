@@ -1,47 +1,251 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Fredoka:wght@300..700&family=Mystery+Quest&family=Press+Start+2P&family=Quicksand:wght@300..700&display=swap');
+/* Import gaming font */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-
-.menu-container{
-   background-image: url("../assets//background.gif");
-   background-position: center;
- 
-     font-family: "Press Start 2P", system-ui;
-    width: 100%;
-    height: 100vh;
-    padding: 100px;
-    color: white;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
+/* Main menu container */
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
+  color: #ffffff;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
 }
 
-.menu-container{
-    font-size: 2rem;
+.menu-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
+              radial-gradient(circle at 40% 80%, rgba(120, 255, 198, 0.3), transparent 50%);
+  animation: backgroundPulse 10s ease-in-out infinite alternate;
+  pointer-events: none;
 }
 
-.button-container{
-    margin-top: 50px;
+@keyframes backgroundPulse {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(30deg); }
+}
+
+/* Title styling */
+.menu-container h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Button container */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+  min-width: 400px;
+}
+
+/* Button styling */
+.button-container button {
+  padding: 1.2rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: 'Orbitron', monospace;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  min-width: 300px;
+  color: white;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.button-container button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.button-container button:hover::before {
+  left: 100%;
+}
+
+.button-container button:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+  box-shadow: 
+    0 10px 25px rgba(78, 205, 196, 0.4),
+    0 0 20px rgba(78, 205, 196, 0.3);
+}
+
+.button-container button:active {
+  transform: translateY(-2px) scale(1.02);
+  transition: all 0.1s ease;
+}
+
+/* Different colors for different buttons */
+.button-container button:nth-child(1) {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+.button-container button:nth-child(1):hover {
+  background: linear-gradient(45deg, #ff5252, #d32f2f);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+}
+
+.button-container button:nth-child(2) {
+  background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+}
+
+.button-container button:nth-child(2):hover {
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  box-shadow: 0 8px 25px rgba(78, 205, 196, 0.6);
+}
+
+.button-container button:nth-child(3) {
+  background: linear-gradient(45deg, #9b59b6, #8e44ad);
+  box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4);
+}
+
+.button-container button:nth-child(3):hover {
+  background: linear-gradient(45deg, #8e44ad, #732d91);
+  box-shadow: 0 8px 25px rgba(155, 89, 182, 0.6);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .menu-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
   
-    width: 50%;
-    height: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
+  .button-container {
+    min-width: 350px;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+  
+  .button-container button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    min-width: 280px;
+  }
 }
 
-.button-container button{
-    font-size: 1.2rem;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-      font-family: "Press Start 2P", system-ui;
+@media (max-width: 600px) {
+  .menu-container {
+    padding: 15px;
+  }
+  
+  .menu-container h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .button-container {
+    min-width: 320px;
+    padding: 1.2rem;
+    gap: 1.2rem;
+  }
+  
+  .button-container button {
+    padding: 0.9rem 1.8rem;
+    font-size: 0.95rem;
+    min-width: 260px;
+    letter-spacing: 1px;
+  }
 }
 
-.button-container button:hover{
-    background-color: hsl(0, 100%, 80%);
+@media (max-width: 480px) {
+  .menu-container {
+    padding: 10px;
+  }
+  
+  .menu-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .button-container {
+    min-width: 280px;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .button-container button {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.85rem;
+    min-width: 220px;
+    letter-spacing: 0.5px;
+  }
+}
+
+@media (max-width: 360px) {
+  .menu-container h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .button-container {
+    min-width: 250px;
+    padding: 0.8rem;
+    gap: 0.8rem;
+  }
+  
+  .button-container button {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.75rem;
+    min-width: 200px;
+    letter-spacing: 0.3px;
+  }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-
+import "../styles/PlayerVsPlayerOnline.css"
 const PlayerVsPlayerOnline = () => {
     const [ ws, setWs ] = useState(null);
     const [ gameState, setGameState ] = useState(Array(9).fill(""));
@@ -7,8 +7,9 @@ const PlayerVsPlayerOnline = () => {
     const [ currentPlayer, setCurrentPlayer ] = useState("X");
     const [ gameStarted, setGameStarted ] = useState(false);
     const [ symbol, setSymbol ] = useState(null);
+    const [ score, setScore ] = useState({ X: 0, O: 0 });
     const isConnected = useRef(false);
-    const wsRef = useRef(null);
+    const wsRef = useRef(null); 
 
        const winPatters = [
         [0, 1, 2],
@@ -42,6 +43,8 @@ const PlayerVsPlayerOnline = () => {
             setSymbol(data.symbol);
             console.log(`The game starts you are ${data.symbol}`);
             setStatus(`The game starts, you are ${data.symbol}`)
+            
+            
            }
            if(data.type === "update"){
             setGameState(data.board);
@@ -58,6 +61,8 @@ const PlayerVsPlayerOnline = () => {
             if(winner){
               setStatus(`The winner is ${winner}!`);
               setGameStarted(false);
+              setScore(s => ({...s, [winner]: s[winner] + 1}))
+  
               return;
             }
            }
@@ -199,12 +204,16 @@ const PlayerVsPlayerOnline = () => {
     }
 
   return (
-    <div>
+    <div className="game-container">
       <h1>TicTacToe Online</h1>
-      <div>{status}</div>
-      {symbol && <div>{`You are: ${symbol}`}</div>}
+      
+      <div className="game-info">
+        <div className="status">{status}</div>
+        {symbol && <div className="player-info">{`You are: ${symbol}`}</div>}
+        <div className="score-display">Scores - X: {score.X} | O: {score.O}</div>
+      </div>
 
-      <div className='tictactoe-container'>
+      <div className='tictactoe-container2'>
         {gameState.map((cell, index) => (
           <div key={index}
                className='cell'
@@ -213,11 +222,10 @@ const PlayerVsPlayerOnline = () => {
         ))}
       </div>
 
-
-
-
+      <div className="button-container">
         <button onClick={() => handleReset()}>RESET</button>
-      <button onClick={() => exit()}>Exit Connection</button>
+        <button onClick={() => exit()}>Exit</button>
+      </div>
     </div>
   )
 }

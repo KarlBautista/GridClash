@@ -12,7 +12,7 @@ const Menu = () => {
     }
   return (
     <div className='menu-container'>
-        <h1>Online TicTacToe</h1>
+        <h1>GRIDCLASH</h1>
 
         <div className="button-container">
             <button onClick={() => handleNavigate("player-vs-computer")}>Player VS Computer</button>
