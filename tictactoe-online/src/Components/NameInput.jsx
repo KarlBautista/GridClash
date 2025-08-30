@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import "../styles/NameInput.css"
-import { usePVPLocalContext } from '../contexts/pvpLocalContext';
+import { usePlayerVsPlayerLocalContext } from '../contexts/PlayerVsPlayerLocalContext';
 const NameInput = () => {
     const [playerNames, setPlayerNames] = useState({
         playerX: "",
         playerO: "",
     });
-    const { addNames } = usePVPLocalContext();
+    const { addNames } = usePlayerVsPlayerLocalContext();
     const handleOnchange = (e) => {
         setPlayerNames(p => ({...p, [e.target.name]: e.target.value}))
     }

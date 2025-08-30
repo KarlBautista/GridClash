@@ -5,13 +5,13 @@ import './App.css'
 import Tictactoe from './Components/Tictactoe'
 import Menu from './Components/Menu'
 import { Outlet } from 'react-router-dom'
-import { PVPLocalProvider } from './contexts/pvpLocalContext'
+import { PlayerVsPlayerLocalProvider } from './contexts/PlayerVsPlayerLocalContext'
 import { PlayerVsComputerProvider } from './contexts/PlayerVsComputerContext'
 function App() {
 
 
   return (
-   <PVPLocalProvider>
+   <PlayerVsPlayerLocalProvider>
     <PlayerVsComputerProvider>
       <main>
         <Outlet />{
@@ -19,7 +19,7 @@ function App() {
         }
       </main>
       </PlayerVsComputerProvider>
- </PVPLocalProvider>
+ </PlayerVsPlayerLocalProvider>
   )
 }
 
