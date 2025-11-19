@@ -174,52 +174,23 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .name-input-container {
-    width: 420px;
+    width: 400px;
     padding: 2rem;
   }
   
   .name-input-container h2 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
   
   .input-group input {
     width: 85%;
-    height: 55px;
-    font-size: 1.1rem;
-  }
-  
-  .input-group button {
-    padding: 0.9rem 2.2rem;
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .name-input-container {
-    width: 350px;
-    padding: 1.8rem;
-  }
-  
-  .name-input-container h2 {
-    font-size: 1.4rem;
-    margin-bottom: 1.8rem;
-  }
-  
-  .input-group {
-    gap: 1.2rem;
-  }
-  
-  .input-group input {
-    width: 90%;
     height: 50px;
     font-size: 1rem;
-    padding: 0 1.2rem;
   }
   
   .input-group button {
     padding: 0.8rem 2rem;
-    font-size: 0.95rem;
-    min-width: 140px;
+    font-size: 1rem;
   }
 }
 
@@ -249,62 +220,6 @@
     padding: 0.7rem 1.5rem;
     font-size: 0.9rem;
     min-width: 120px;
-  }
-}
-
-@media (max-width: 360px) {
-  .name-input-container {
-    width: 280px;
-    padding: 1.2rem;
-  }
-  
-  .name-input-container h2 {
-    font-size: 1.1rem;
-    margin-bottom: 1.2rem;
-  }
-  
-  .input-group {
-    gap: 0.8rem;
-  }
-  
-  .input-group input {
-    width: 95%;
-    height: 40px;
-    font-size: 0.8rem;
-    padding: 0 0.8rem;
-  }
-  
-  .input-group button {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.8rem;
-    min-width: 100px;
-  }
-}
-
-/* Landscape phone orientation */
-@media (max-height: 500px) and (orientation: landscape) {
-  .name-input-container {
-    width: 400px;
-    padding: 1rem;
-  }
-  
-  .name-input-container h2 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-  }
-  
-  .input-group {
-    gap: 0.8rem;
-  }
-  
-  .input-group input {
-    height: 40px;
-    font-size: 0.9rem;
-  }
-  
-  .input-group button {
-    padding: 0.6rem 1.5rem;
-    font-size: 0.85rem;
   }
 }
 

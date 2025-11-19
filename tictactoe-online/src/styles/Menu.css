@@ -170,7 +170,7 @@
   }
   
   .button-container {
-    min-width: 350px;
+    min-width: 300px;
     padding: 1.5rem;
     gap: 1.5rem;
   }
@@ -178,31 +178,7 @@
   .button-container button {
     padding: 1rem 2rem;
     font-size: 1rem;
-    min-width: 280px;
-  }
-}
-
-@media (max-width: 600px) {
-  .menu-container {
-    padding: 15px;
-  }
-  
-  .menu-container h1 {
-    font-size: 2.2rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .button-container {
-    min-width: 320px;
-    padding: 1.2rem;
-    gap: 1.2rem;
-  }
-  
-  .button-container button {
-    padding: 0.9rem 1.8rem;
-    font-size: 0.95rem;
-    min-width: 260px;
-    letter-spacing: 1px;
+    min-width: 250px;
   }
 }
 
@@ -212,40 +188,18 @@
   }
   
   .menu-container h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1.2rem;
+    font-size: 2rem;
   }
   
   .button-container {
     min-width: 280px;
     padding: 1rem;
-    gap: 1rem;
   }
   
   .button-container button {
     padding: 0.8rem 1.5rem;
-    font-size: 0.85rem;
-    min-width: 220px;
-    letter-spacing: 0.5px;
-  }
-}
-
-@media (max-width: 360px) {
-  .menu-container h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .button-container {
-    min-width: 250px;
-    padding: 0.8rem;
-    gap: 0.8rem;
-  }
-  
-  .button-container button {
-    padding: 0.7rem 1.2rem;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     min-width: 200px;
-    letter-spacing: 0.3px;
+    letter-spacing: 1px;
   }
 }
