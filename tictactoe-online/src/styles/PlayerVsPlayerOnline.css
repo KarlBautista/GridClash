@@ -1,7 +1,7 @@
-/* Import gaming font */
+
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-/* Global container styling */
+
 body {
   margin: 0;
   padding: 0;
@@ -12,7 +12,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Main game container */
+
 .game-container {
   display: flex;
   flex-direction: column;
@@ -31,7 +31,7 @@ body {
   100% { filter: hue-rotate(30deg); }
 }
 
-/* Title styling */
+
 h1 {
   font-size: 3rem;
   font-weight: 900;
@@ -106,7 +106,7 @@ h1 {
   50% { transform: translateY(-5px); }
 }
 
-/* TicTacToe grid container */
+
 .tictactoe-container2 {
   display: grid;
   grid-template-columns: repeat(3, 120px);

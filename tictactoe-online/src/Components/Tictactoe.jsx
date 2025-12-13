@@ -132,6 +132,21 @@ const Tictactoe = () => {
         setIsGameActive(true)
         
     }
+
+    
+    const handleBackToMainMenu = async () => {
+            const response = await Swal.fire({
+                title: "Are you sure you want to exit the game?",
+                showConfirmButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No"
+            });
+            
+            if (response.isConfirmed) {
+               backToMainMenu();
+            }
+    }
     
     const backToMainMenu = () => {
         clearNames();
@@ -171,7 +186,7 @@ const Tictactoe = () => {
            
             <div className="reset-button-container">
                 <button onClick={() => resetGame()}>Reset</button>
-                <button onClick={() => backToMainMenu()}>Exit</button>
+                <button onClick={() => handleBackToMainMenu()}>Exit</button>
             </div>
               
               

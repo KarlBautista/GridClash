@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import "../styles/PlayerVsPlayerOnline.css"
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import Loading from '../assets/loading.gif'
 const PlayerVsPlayerOnline = () => {
     const [ ws, setWs ] = useState(null);
     const [ gameState, setGameState ] = useState(Array(9).fill(""));
@@ -8,8 +11,10 @@ const PlayerVsPlayerOnline = () => {
     const [ gameStarted, setGameStarted ] = useState(false);
     const [ symbol, setSymbol ] = useState(null);
     const [ score, setScore ] = useState({ X: 0, O: 0 });
+    const [ searchLoading, setSearchLoading ] = useState(true);
     const isConnected = useRef(false);
     const wsRef = useRef(null); 
+    const navigate = useNavigate();
 
        const winPatters = [
         [0, 1, 2],
@@ -25,16 +30,26 @@ const PlayerVsPlayerOnline = () => {
     useEffect(() => {
         if(isConnected.current) return;
         isConnected.current = true;
-        const socket = new WebSocket("wss://gridclash.onrender.com");
+        const socket = new WebSocket("wss://gridclash.onrender.com/");
         wsRef.current = socket;
         setWs(socket);
 
         socket.onopen = () => {
-            setStatus("Waiting for opponent");
-            console.log("You are connected");
+            setStatus("Searching for an opponent...");
+            if (searchLoading) {
+              Swal.fire({
+              theme: "auto",
+              title: "Searching for an opponent...",
+              showConfirmButton: false,
+              imageUrl: Loading,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            })
+            }
+        
         }
 
-        console.log(status);
+  
 
         socket.onmessage = (event) => {
           const data = JSON.parse(event.data)
@@ -42,7 +57,8 @@ const PlayerVsPlayerOnline = () => {
             setGameStarted(true);
             setSymbol(data.symbol);
             console.log(`The game starts you are ${data.symbol}`);
-            setStatus(`The game starts, you are ${data.symbol}`)
+            setStatus(`The game starts, you are ${data.symbol}`);
+            setSearchLoading(false);
             
             
            }
@@ -68,8 +84,7 @@ const PlayerVsPlayerOnline = () => {
            }
 
         if (data.type === "reset") {
-        console.log("Reset message received:", data);
-        setGameState([...data.board]); // clone to ensure React notices
+        setGameState([...data.board]); 
         setCurrentPlayer(data.currentPlayer);
         setGameStarted(true);
         setStatus(`Game reset! ${data.currentPlayer} starts first.`);
@@ -205,7 +220,7 @@ const PlayerVsPlayerOnline = () => {
 
   return (
     <div className="game-container">
-      <h1>TicTacToe Online</h1>
+      <h1>Player vs Player (Online)</h1>
       
       <div className="game-info">
         <div className="status">{status}</div>
