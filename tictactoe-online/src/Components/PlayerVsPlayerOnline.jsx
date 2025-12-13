@@ -59,6 +59,7 @@ const PlayerVsPlayerOnline = () => {
             console.log(`The game starts you are ${data.symbol}`);
             setStatus(`The game starts, you are ${data.symbol}`);
             setSearchLoading(false);
+             try { Swal.close(); } catch {}
             
             
            }
@@ -69,6 +70,7 @@ const PlayerVsPlayerOnline = () => {
             if(checkIfDraw(data.board)){
               setStatus("Its a draw");
               setGameStarted(false);
+                try { Swal.close(); } catch {}
             
               return
             }
@@ -78,6 +80,7 @@ const PlayerVsPlayerOnline = () => {
               setStatus(`The winner is ${winner}!`);
               setGameStarted(false);
               setScore(s => ({...s, [winner]: s[winner] + 1}))
+              try { Swal.close(); } catch {}
   
               return;
             }
@@ -132,6 +135,7 @@ const PlayerVsPlayerOnline = () => {
            if(data.type === "end"){
             console.log("A player disconnected, the game ends");
              setStatus("Your opponent disconnected.")
+               try { Swal.close(); } catch {}
            }
 
 
