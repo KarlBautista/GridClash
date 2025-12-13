@@ -2,7 +2,7 @@
 /* Import gaming font */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-/* Main menu container */
+
 .menu-container {
   display: flex;
   flex-direction: column;

@@ -2,20 +2,20 @@ import React, { use, useEffect, useState } from 'react'
 import "../styles/TicTacToeComputer.css"
 import { usePlayerVsComputerContext } from '../contexts/PlayerVsComputerContext';
 import PlayerVsComputerNameInput from './PlayerVsComputerNameInput';
+import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2"
 const TicTacToeComputer = () => {
-
     const [ gameState, setGameState ] = useState(Array(9).fill(""));
     const [ isGameActive, setIsGameActive ] = useState(true);
     const [ gameStatus, setGameStatus ] = useState("Player (X) turn");
     const [ currentPlayer, setCurrentPlayer ] = useState("X");
-    const { playerName } = usePlayerVsComputerContext();
+    const { playerName, clearName } = usePlayerVsComputerContext();
+    const navigate = useNavigate();
     const [ score, setScore ] = useState({
         playerX: 0,
         playerO: 0,
     }
 )
-    
-
 
 
     const winPatters = [
@@ -43,7 +43,13 @@ const TicTacToeComputer = () => {
   
         if(checkWin(computerGameState)){
             setTimeout(() => {
-                alert("Computer (O) Wins!");
+                Swal.fire({
+                    title: "Computer (O) Wins!",
+                    text: "Do you want to clear the canvas?",
+                    showConfirmButton: true,
+                    showCancelButton: true
+                })
+              
             }, 100);
             setScore(s => ({...s, ["playerO"]: s["playerO"] + 1}))
             setIsGameActive(false);
@@ -53,7 +59,13 @@ const TicTacToeComputer = () => {
    
         if(checkIfFull(computerGameState)){
             setTimeout(() => {
-                alert("All cells are filled, It's a draw");
+                Swal.fire({
+                    title: "All cells are filled, It's a draw",
+                    text: "Do you want to clear the canvas?",
+                    showConfirmButton: true,
+                    showCancelButton: true
+                });
+            
             }, 100);
             setIsGameActive(false);
             return;
@@ -91,9 +103,39 @@ const TicTacToeComputer = () => {
 
         if(checkWin(newGameState)){ 
             setTimeout(() => {
-                alert(`Player ${currentPlayer} Wins!`);
+                Swal.fire({
+                        title: `Player ${currentPlayer} Wins!`,
+                        text: "Do you want to clear the canvas?",
+                        showConfirmButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, I want to play again!",
+                        cancelButtonText: "No, I'm going back to the Main Menu"
+                            }).then((response) => {
+                                if (response.isConfirmed) {
+                                    resetGame();
+                                } else if (response.dismiss === Swal.DismissReason.cancel) {
+                                    Swal.fire({ 
+                                        title: "Are you sure you want to exit the game?",
+                                        showConfirmButton: true,
+                                        showCancelButton: true,
+                                        confirmButtonText: "Yes",
+                                        cancelButtonText: "No",
+                                      }).then((response) => {
+                                        if (response.isConfirmed) {
+                                            backToMainMenu();
+                                        } else if (response.dismiss === Swal.DismissReason.cancel) {
+                                            resetGame();
+                                        }
+                                      })
+                                }
+                            })
+             
+               
             }, 100);
-              setScore(s => ({...s, ["playerX"]: s["playerX"] + 1}))
+
+             
+              
+            setScore(s => ({...s, ["playerX"]: s["playerX"] + 1}))
             setIsGameActive(false);
             return;
         }
@@ -116,7 +158,7 @@ const TicTacToeComputer = () => {
         }, 500);
     }
 
-       const resetGame = () => {
+    const resetGame = () => {
         setGameState(Array(9).fill(""));
         setCurrentPlayer("X");
         setGameStatus("Player X turn");
@@ -124,11 +166,22 @@ const TicTacToeComputer = () => {
         
     }
 
+    const backToMainMenu = () => {
+        setGameState(null);
+        setIsGameActive(false);
+        navigate("/");
+        clearName();
+    }
+        
+
   return (
     <div className='tictactoe-computer'>
         { playerName  === "" ? <PlayerVsComputerNameInput /> : (
             <>
+         
+            <h1>Player vs Computer</h1>
          <div className="player-stats-container">
+                
                 <div className="player-x">
                       <h3>{`${playerName} (player X)`}</h3>
                       <p>{score.playerX}</p>
@@ -150,6 +203,8 @@ const TicTacToeComputer = () => {
 
            <div className="reset-button-container">
                 <button onClick={() => resetGame()}>Reset</button>
+                 <button id='player-vs-computer-back'
+                 onClick={() => backToMainMenu()}>Exit</button>
             </div>
             </>
 

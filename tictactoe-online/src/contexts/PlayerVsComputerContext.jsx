@@ -11,9 +11,14 @@ export const PlayerVsComputerProvider = ({ children }) => {
         setPlayerName(name);
     }
 
+    const clearName = (name) => {
+        setPlayerName("");
+    }
+
     const value = {
         addName,
-        playerName
+        playerName,
+        clearName
     }
 
     return (
