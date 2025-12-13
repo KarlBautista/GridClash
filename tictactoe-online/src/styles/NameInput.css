@@ -16,7 +16,7 @@
   z-index: 1000;
 }
 
-/* Main container */
+
 .name-input-container {
   font-family: 'Orbitron', monospace;
   position: relative;
@@ -33,6 +33,7 @@
   align-items: center;
   color: white;
   animation: modalSlideIn 0.3s ease-out;
+  gap: 20px;
 }
 
 @keyframes modalSlideIn {

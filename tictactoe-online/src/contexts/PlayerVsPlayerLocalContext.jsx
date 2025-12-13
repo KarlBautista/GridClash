@@ -12,9 +12,9 @@ export const PlayerVsPlayerLocalProvider = ({ children }) => {
  
 
 
-    const addNames = async (names) => {
+    const addNames =  (names) => {
         try{
-            await setPlayerNames(names);
+           setPlayerNames(names);
          
            
         } catch (err){
@@ -22,12 +22,15 @@ export const PlayerVsPlayerLocalProvider = ({ children }) => {
         }
     }
 
-    console.log(playerNames)
+    const clearNames = () => {
+        setPlayerNames({ playerX: "", playerO: "" });
+    }
 
     
  const value = {
         playerNames,
         addNames,
+        clearNames
     }
 
     return(
