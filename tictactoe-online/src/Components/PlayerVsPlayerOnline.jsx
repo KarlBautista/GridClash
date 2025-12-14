@@ -83,7 +83,7 @@ const PlayerVsPlayerOnline = () => {
 
             const winner = checkIfWinner(data.board);
             if(winner){
-              setStatus(`The winner is ${winner}!`);
+              setStatus(`The winner is ${winner}!. The score is X:${score.X} and O:${score.O}`);
               setGameStarted(false);
               setScore(s => ({...s, [winner]: s[winner] + 1}))
               Swal.fire({

@@ -1,7 +1,7 @@
 /* Import gaming font */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-/* Backdrop styling */
+
 .name-input-backdrop {
   position: fixed;
   top: 0;
@@ -47,7 +47,7 @@
   }
 }
 
-/* Title styling */
+
 .name-input-container h2 {
   font-size: 1.8rem;
   font-weight: 700;
@@ -66,7 +66,7 @@
   50% { background-position: 100% 50%; }
 }
 
-/* Input group */
+
 .input-group {
   width: 100%;
   display: flex;
@@ -76,7 +76,7 @@
   margin-top: 1rem;
 }
 
-/* Input styling */
+
 .input-group input {
   width: 80%;
   height: 60px;
@@ -110,7 +110,7 @@
   transform: scale(1.02);
 }
 
-/* Button styling */
+
 .input-group button {
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
@@ -172,7 +172,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsive design */
+
 @media (max-width: 768px) {
   .name-input-container {
     width: 400px;

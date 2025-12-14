@@ -1,7 +1,7 @@
-/* Import gaming font */
+
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-/* Main container */
+
 .player-vs-player-local {
   display: flex;
   flex-direction: column;
@@ -39,7 +39,7 @@
   100% { filter: hue-rotate(30deg); }
 }
 
-/* Title styling */
+
 h1 {
   font-size: 3.5rem;
   font-weight: 900;
@@ -61,7 +61,7 @@ h1 {
   50% { background-position: 100% 50%; }
 }
 
-/* Player stats container */
+
 .player-stats-container {
   display: flex;
   justify-content: space-around;
@@ -109,7 +109,7 @@ h1 {
   100% { transform: scale(1.02); }
 }
 
-/* TicTacToe grid container */
+
 .tictactoe-container {
   display: grid;
   grid-template-columns: repeat(3, 150px);
@@ -143,7 +143,6 @@ h1 {
   }
 }
 
-/* Individual cell styling */
 .cell {
   display: flex;
   align-items: center;
@@ -189,7 +188,7 @@ h1 {
   transition: all 0.1s ease;
 }
 
-/* X and O styling */
+
 .cell:not(:empty) {
   animation: cellFillIn 0.5s ease-out;
   pointer-events: none;
@@ -210,7 +209,7 @@ h1 {
   }
 }
 
-/* Game status */
+
 .game-status {
   font-size: 1.8rem;
   font-weight: 700;
@@ -231,7 +230,7 @@ h1 {
   100% { box-shadow: 0 4px 25px rgba(102, 126, 234, 0.8); }
 }
 
-/* Reset button container */
+
 .reset-button-container {
   margin-top: 2rem;
   position: relative;
@@ -282,7 +281,6 @@ h1 {
   transition: all 0.1s ease;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   h1 {
     font-size: 2.5rem;

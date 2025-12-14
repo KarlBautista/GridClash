@@ -1,6 +1,4 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-
 
 body {
   margin: 0;
@@ -12,13 +10,14 @@ body {
   overflow-x: hidden;
 }
 
-
 .game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
   padding: 20px;
   background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
               radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
@@ -30,7 +29,6 @@ body {
   0% { filter: hue-rotate(0deg); }
   100% { filter: hue-rotate(30deg); }
 }
-
 
 h1 {
   font-size: 3rem;
@@ -51,7 +49,6 @@ h1 {
   50% { background-position: 100% 50%; }
 }
 
-/* Game info section */
 .game-info {
   display: flex;
   flex-direction: column;
@@ -106,7 +103,6 @@ h1 {
   50% { transform: translateY(-5px); }
 }
 
-
 .tictactoe-container2 {
   display: grid;
   grid-template-columns: repeat(3, 120px);
@@ -138,7 +134,6 @@ h1 {
   }
 }
 
-/* Individual cell styling */
 .cell {
   display: flex;
   align-items: center;
@@ -184,7 +179,6 @@ h1 {
   transition: all 0.1s ease;
 }
 
-/* X and O styling */
 .cell:not(:empty) {
   animation: cellFillIn 0.5s ease-out;
   pointer-events: none;
@@ -205,14 +199,12 @@ h1 {
   }
 }
 
-/* Button container */
 .button-container {
   display: flex;
   gap: 1.5rem;
   margin-top: 2rem;
 }
 
-/* Button styling */
 button {
   padding: 1rem 2rem;
   font-size: 1.1rem;
@@ -243,7 +235,6 @@ button:hover::before {
   left: 100%;
 }
 
-/* Reset button */
 button:first-of-type {
   background: linear-gradient(45deg, #ff6b6b, #ee5a52);
   color: white;
@@ -256,7 +247,6 @@ button:first-of-type:hover {
   box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
 }
 
-/* Exit button */
 button:last-of-type {
   background: linear-gradient(45deg, #9b59b6, #8e44ad);
   color: white;
@@ -269,27 +259,39 @@ button:last-of-type:hover {
   box-shadow: 0 8px 25px rgba(155, 89, 182, 0.6);
 }
 
-/* Responsive design */
+/* Mobile optimizations */
 @media (max-width: 768px) {
+  .game-container {
+    padding: 15px;
+  }
+
   h1 {
     font-size: 2rem;
+    margin-bottom: 1rem;
   }
   
-  .tictactoe-container {
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
+  .tictactoe-container2 {
+    grid-template-columns: repeat(3, 90px);
+    grid-template-rows: repeat(3, 90px);
     gap: 6px;
+    padding: 15px;
+    margin: 1.5rem 0;
   }
-  
+
   .cell {
     font-size: 2.5rem;
   }
   
-  .button-container {
-    flex-direction: column;
-    gap: 1rem;
+  .game-info {
+    gap: 0.8rem;
+    padding: 1rem;
   }
   
+  .button-container {
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
   button {
     padding: 0.8rem 1.5rem;
     font-size: 1rem;
@@ -300,23 +302,77 @@ button:last-of-type:hover {
   .game-container {
     padding: 10px;
   }
-  
-  .tictactoe-container {
-    grid-template-columns: repeat(3, 80px);
-    grid-template-rows: repeat(3, 80px);
-    gap: 4px;
-    padding: 15px;
+
+  h1 {
+    font-size: 1.5rem;
   }
   
+  .tictactoe-container2 {
+    grid-template-columns: repeat(3, 75px);
+    grid-template-rows: repeat(3, 75px);
+    gap: 5px;
+    padding: 12px;
+  }
+
   .cell {
     font-size: 2rem;
   }
   
   .game-info {
-    padding: 1rem;
+    padding: 0.8rem;
+    gap: 0.7rem;
   }
   
-  .status, .player-info, .score-display {
+  .status {
+    font-size: 0.95rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .player-info {
+    font-size: 0.9rem;
+  }
+
+  .score-display {
     font-size: 1rem;
+    padding: 0.6rem 1rem;
+  }
+  
+  .button-container {
+    gap: 0.8rem;
+  }
+  
+  button {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .tictactoe-container2 {
+    grid-template-columns: repeat(3, 70px);
+    grid-template-rows: repeat(3, 70px);
+    gap: 4px;
+    padding: 10px;
+  }
+  
+  .cell {
+    font-size: 1.8rem;
+  }
+
+  .status {
+    font-size: 0.85rem;
+  }
+
+  .player-info {
+    font-size: 0.85rem;
+  }
+
+  .score-display {
+    font-size: 0.95rem;
+  }
+
+  button {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
   }
 }

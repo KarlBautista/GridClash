@@ -1,5 +1,4 @@
 
-/* Import gaming font */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
 
@@ -42,7 +41,7 @@
   100% { filter: hue-rotate(30deg); }
 }
 
-/* Title styling */
+
 .menu-container h1 {
   font-size: 4rem;
   font-weight: 900;
@@ -64,7 +63,7 @@
   50% { background-position: 100% 50%; }
 }
 
-/* Button container */
+
 .button-container {
   display: flex;
   flex-direction: column;
@@ -83,7 +82,7 @@
   min-width: 400px;
 }
 
-/* Button styling */
+
 .button-container button {
   padding: 1.2rem 3rem;
   font-size: 1.2rem;
@@ -131,7 +130,7 @@
   transition: all 0.1s ease;
 }
 
-/* Different colors for different buttons */
+
 .button-container button:nth-child(1) {
   background: linear-gradient(45deg, #ff6b6b, #ee5a52);
   box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
@@ -162,7 +161,7 @@
   box-shadow: 0 8px 25px rgba(155, 89, 182, 0.6);
 }
 
-/* Responsive design */
+
 @media (max-width: 768px) {
   .menu-container h1 {
     font-size: 2.5rem;
