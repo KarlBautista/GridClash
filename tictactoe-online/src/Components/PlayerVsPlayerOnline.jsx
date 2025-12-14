@@ -56,11 +56,17 @@ const PlayerVsPlayerOnline = () => {
            if(data.type === "start"){
             setGameStarted(true);
             setSymbol(data.symbol);
-            console.log(`The game starts you are ${data.symbol}`);
+            
             setStatus(`The game starts, you are ${data.symbol}`);
             setSearchLoading(false);
-             try { Swal.close(); } catch {}
-            
+            try { Swal.close(); } catch {}
+            Swal.fire({ 
+              title: `The game starts, you are ${data.symbol}`,
+              text: "Give your best to beat your opponent. Goodluck!",
+              timer: 3000,
+            });
+
+          
             
            }
            if(data.type === "update"){
@@ -70,7 +76,7 @@ const PlayerVsPlayerOnline = () => {
             if(checkIfDraw(data.board)){
               setStatus("Its a draw");
               setGameStarted(false);
-                try { Swal.close(); } catch {}
+             
             
               return
             }
@@ -80,7 +86,10 @@ const PlayerVsPlayerOnline = () => {
               setStatus(`The winner is ${winner}!`);
               setGameStarted(false);
               setScore(s => ({...s, [winner]: s[winner] + 1}))
-              try { Swal.close(); } catch {}
+              Swal.fire({
+                title: `The winner is ${winner}`,
+                message: ""
+              })
   
               return;
             }
@@ -95,7 +104,7 @@ const PlayerVsPlayerOnline = () => {
 
 
         if (data.type === "reset_confirmation") {
-      console.log("Reset confirmation received from:", data.requestedBy);
+
 
       const sendResponse = (approved) => {
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
@@ -105,9 +114,21 @@ const PlayerVsPlayerOnline = () => {
         }
       };
 
-      const confirmReset = () => {
-        const confirmed = window.confirm("Opponent wants to reset...");
-        sendResponse(confirmed);
+      const confirmReset = async () => {
+  
+        const confirmed = await Swal.fire({ 
+          title: "Opponent wants to play again with you.",
+          showConfirmButton: true,
+          showCancelButton: true,
+          confirmButtonText: "Yes, I want to play again!",
+          cancelButtonText: "No, It's a great time playing!"
+        });
+        if (confirmed.isConfirmed) {
+           sendResponse(confirmed);
+        } else if (confirmed.dismiss === Swal.DismissReason.cancel) {
+          handleExit();
+          }
+       
       };
 
       if (document.visibilityState !== "visible") {
@@ -159,13 +180,24 @@ const PlayerVsPlayerOnline = () => {
        }
        
     }, [symbol]);
-
+    const handleExit = () => {
+      Swal.fire({ 
+        title: "Are you sure you want to quit the game?",
+        showConfirmButton: true,
+        showCancelButton: true,
+      }).then((response) => {
+        if (response.isConfirmed) {
+          exit();
+          navigate("/");
+        }
+      })
+    }
     const exit = () => {
         ws.close();
         console.log("You disconnected");
     }
 
-    
+        
        const checkIfDraw = (gameState) => {
         return gameState.every(cell => cell !== "");
        }
@@ -243,7 +275,7 @@ const PlayerVsPlayerOnline = () => {
 
       <div className="button-container">
         <button onClick={() => handleReset()}>RESET</button>
-        <button onClick={() => exit()}>Exit</button>
+        <button onClick={() => handleExit()}>Exit</button>
       </div>
     </div>
   )
