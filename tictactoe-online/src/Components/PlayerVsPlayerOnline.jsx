@@ -124,9 +124,13 @@ const PlayerVsPlayerOnline = () => {
           cancelButtonText: "No, It's a great time playing!"
         });
         if (confirmed.isConfirmed) {
-           sendResponse(confirmed);
+           sendResponse(true);
         } else if (confirmed.dismiss === Swal.DismissReason.cancel) {
-          handleExit();
+          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({ type: "reset_response", approved: false }));
+            wsRef.current.close();
+          }
+          navigate("/");
           }
        
       };
@@ -187,8 +191,15 @@ const PlayerVsPlayerOnline = () => {
         showCancelButton: true,
       });
       if (response.isConfirmed) {
-        exit();
-        navigate("/");
+        try {
+          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            wsRef.current.close();
+          }
+          navigate("/");
+        } catch (error) {
+          console.error("Error during exit:", error);
+          navigate("/");
+        }
       } 
       }
     
