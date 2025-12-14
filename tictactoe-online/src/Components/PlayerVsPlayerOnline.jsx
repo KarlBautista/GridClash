@@ -180,17 +180,17 @@ const PlayerVsPlayerOnline = () => {
        }
        
     }, [symbol]);
-    const handleExit = () => {
-      Swal.fire({ 
+    const handleExit = async () => {
+      const response = await Swal.fire({ 
         title: "Are you sure you want to quit the game?",
         showConfirmButton: true,
         showCancelButton: true,
-      }).then((response) => {
-        if (response.isConfirmed) {
-          exit();
-          navigate("/");
-        }
-      })
+      });
+      if (response.isConfirmed) {
+        exit();
+        navigate("/");
+      } 
+      }
     }
     const exit = () => {
         ws.close();
