@@ -4,7 +4,7 @@ import { createServer } from "http";
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Grid clash Websocket server is runnung");
+  res.send("Grid clash Websocket server is running");
 });
 
 const PORT = process.env.PORT || 3000;
@@ -36,7 +36,6 @@ const handleMove = (ws, data, game) => {
   console.log(`Move made by ${ws.symbol} at position ${data.index}`);
   console.log("Board state", game.board);
 
-  // Broadcast update to all players in this game
   broadcastToGame(ws.gameId, {
     type: "update",
     board: [...game.board],
@@ -82,7 +81,7 @@ const handleResetResponse = (ws, data, game) => {
   console.log(`Reset response: ${data.approved} by ${ws.symbol}`);
 
   if (data.approved) {
-    // Reset the game
+  
     game.board = Array(9).fill("");
     game.currentPlayer = "X";
 
@@ -93,7 +92,7 @@ const handleResetResponse = (ws, data, game) => {
       currentPlayer: game.currentPlayer
     });
   } else {
-    // Notify both players that reset was denied
+
     broadcastToGame(ws.gameId, {
       type: "reset_denied",
       message: "Reset request was denied."
@@ -101,7 +100,7 @@ const handleResetResponse = (ws, data, game) => {
   }
 };
 
-// Utility functions
+
 const broadcastToGame = (gameId, message) => {
   wss.clients.forEach((client) => {
     if (client.gameId === gameId && client.readyState === 1) {
@@ -132,7 +131,7 @@ const createGame = (player1, player2) => {
   player1.send(JSON.stringify({ type: "start", symbol: "X", score: 0 }));
   player2.send(JSON.stringify({ type: "start", symbol: "O" , score: 0 }));
 
-  // Handle player disconnections
+ 
   const handleDisconnection = (disconnectedPlayer, otherPlayer) => {
     console.log("A player disconnected");
     if (otherPlayer && otherPlayer.readyState === otherPlayer.OPEN) {
@@ -144,13 +143,12 @@ const createGame = (player1, player2) => {
   player2.on("close", () => handleDisconnection(player2, player1));
 };
 
-// WebSocket connection handler
 wss.on("connection", (ws) => {
   console.log("A player is connected", ws._socket.remoteAddress, ws._socket.remotePort);
   queue.push(ws);
   console.log("Players in queue", queue.length);
 
-  // Message handler
+ 
   ws.on("message", (message) => {
     try {
       const data = JSON.parse(message);
@@ -175,7 +173,7 @@ wss.on("connection", (ws) => {
     }
   });
 
-  // Pair players when we have at least 2 in queue
+
   if (queue.length >= 2) {
     const player1 = queue.shift();
     const player2 = queue.shift();
