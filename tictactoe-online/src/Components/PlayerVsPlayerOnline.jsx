@@ -191,7 +191,7 @@ const PlayerVsPlayerOnline = () => {
         navigate("/");
       } 
       }
-    }
+    
     const exit = () => {
         ws.close();
         console.log("You disconnected");
